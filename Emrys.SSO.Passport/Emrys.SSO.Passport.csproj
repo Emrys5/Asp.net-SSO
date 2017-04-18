@@ -188,9 +188,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\IndexBak.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
