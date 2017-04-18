@@ -91,26 +91,12 @@ namespace Emrys.SSO.Passport.Controllers
 
         public ActionResult Logout(string reurl)
         {
-            // 所有授权网站退出
-
+            // 所有授权网站退出 
             var token = Convert.ToString(Session["SESSIONTOKEN"]);
-            var webSessions = _db.ASPStateTempSessions.Where(i => i.Token == token && !i.IsPassport).ToList();
-            //foreach (var item in webSessions)
-            //{
-            //    var updateItem = _db.ASPStateTempSessions.Where(i => i.SessionId == item.SessionId).FirstOrDefault();
-            //    if (updateItem != null)
-            //    {
-            //        item.Expires = DateTime.Now.AddDays(-1);
-            //        //item.Timeout = 0;
-            //    }
-            //}
+            var webSessions = _db.ASPStateTempSessions.Where(i => i.Token == token).ToList();
 
             _db.ASPStateTempSessions.RemoveRange(webSessions);
-            _db.SaveChanges();
-
-            // passport 退出
-            Session["ISLOGIN"] = null;
-            Session["SESSIONTOKEN"] = null;
+            _db.SaveChanges(); 
 
             return Redirect(reurl);
         }
