@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - WebA</title>
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -22,9 +22,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
+                    <li>@Html.ActionLink("是否登录", "IsLogin", "Home")</li>
                     <li>
-                        <a href="http://www.passport.com/home/logout?reurl=http://www.weba.com">退出</a>
+                        <a href="http://www.passport.com/home/logout?reurl=@(Request.Url.ToString())">退出</a>
                     </li>
                 </ul>
             </div>
