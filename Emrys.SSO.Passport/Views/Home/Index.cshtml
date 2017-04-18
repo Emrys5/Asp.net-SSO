@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "登录";
+}
+
+
+<h2>
+    用户登录
+</h2>
+<label style="color:red">
+    @ViewBag.Msg
+</label>
+<form method="post">
+    <div class="form-group" >
+        <label for="name">用户名</label>
+        <input type="text" class="form-control" name="name">
+    </div>
+
+    <div class="form-group">
+        <label for="name">密码</label>
+        <input type="password" class="form-control"  name="pwd">
+    </div>
+    <button type="submit" class="btn btn-primary">提交</button>
+</form>
