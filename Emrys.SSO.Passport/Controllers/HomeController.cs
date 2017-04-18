@@ -14,7 +14,7 @@ namespace Emrys.SSO.Passport.Controllers
 
         [HttpGet]
         public ActionResult Index(string reurl, string key, long time, string sign)
-        { 
+        {
 
             // 验证参数 
             if (string.IsNullOrEmpty(reurl) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(sign))
@@ -94,7 +94,17 @@ namespace Emrys.SSO.Passport.Controllers
             // 所有授权网站退出
 
             var token = Convert.ToString(Session["SESSIONTOKEN"]);
-            var webSessions = _db.ASPStateTempSessions.Where(i => i.Token == token && !i.IsPassport);
+            var webSessions = _db.ASPStateTempSessions.Where(i => i.Token == token && !i.IsPassport).ToList();
+            //foreach (var item in webSessions)
+            //{
+            //    var updateItem = _db.ASPStateTempSessions.Where(i => i.SessionId == item.SessionId).FirstOrDefault();
+            //    if (updateItem != null)
+            //    {
+            //        item.Expires = DateTime.Now.AddDays(-1);
+            //        //item.Timeout = 0;
+            //    }
+            //}
+
             _db.ASPStateTempSessions.RemoveRange(webSessions);
             _db.SaveChanges();
 

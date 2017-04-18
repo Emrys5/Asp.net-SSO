@@ -100,7 +100,7 @@ namespace Emrys.SSO.Common
         public override void ReleaseItemExclusive(HttpContext context, string id, object lockId)
         {
 
-            var session = db.ASPStateTempSessions.Find(id);
+            var session = db.ASPStateTempSessions.Where(i => i.SessionId == id).FirstOrDefault();
             if (session == null)
             {
                 return;
@@ -123,7 +123,7 @@ namespace Emrys.SSO.Common
         /// <param name="item"></param>
         public override void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
         {
-            var session = db.ASPStateTempSessions.Find(id);
+            var session = db.ASPStateTempSessions.Where(i => i.SessionId == id).FirstOrDefault();
             if (session == null)
             {
                 return;
@@ -142,7 +142,7 @@ namespace Emrys.SSO.Common
         public override void ResetItemTimeout(HttpContext context, string id)
         {
 
-            var session = db.ASPStateTempSessions.Find(id);
+            var session = db.ASPStateTempSessions.Where(i => i.SessionId == id).FirstOrDefault();
             if (session == null)
             {
                 return;
@@ -251,7 +251,7 @@ namespace Emrys.SSO.Common
 
             // 如果数据存储区中未找到任何会话项数据，则GetItemExclusive 方法将 locked 输出参数设置为false，并返回 null。
             // 这将导致 SessionStateModule调用 CreateNewStoreData 方法来为请求创建一个新的SessionStateStoreData 对象。
-            var session = db.ASPStateTempSessions.Find(id);
+            var session = db.ASPStateTempSessions.Where(i => i.SessionId == id).FirstOrDefault();
             if (session == null)
             {
                 return null;
