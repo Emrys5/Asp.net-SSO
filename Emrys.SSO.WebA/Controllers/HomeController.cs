@@ -1,4 +1,5 @@
 ﻿using Emrys.SSO.Common;
+using Emrys.SSO.WebA.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,35 +11,29 @@ namespace Emrys.SSO.WebA.Controllers
     public class HomeController : Controller
     {
         private readonly SessionsDB _db = new SessionsDB();
+        private static string _key = System.Configuration.ConfigurationManager.AppSettings["SSOKey"];
+        private static string _ssoToken = System.Configuration.ConfigurationManager.AppSettings["SSOToken"];
+        private static string _passportUrl = System.Configuration.ConfigurationManager.AppSettings["SSOURL"];
+        private static string _SSOLoginCallback = System.Configuration.ConfigurationManager.AppSettings["SSOLoginCallback"];
 
-        private static string key = System.Configuration.ConfigurationManager.AppSettings["SSOKey"];
-        private static string ssoToken = System.Configuration.ConfigurationManager.AppSettings["SSOToken"];
-        private static string passportUrl = System.Configuration.ConfigurationManager.AppSettings["SSOURL"];
-
+        [AuthLogin]
         public ActionResult Index()
         {
-            if (Session["ISLOGIN"] == null && !Convert.ToBoolean(Session["ISLOGIN"]))
-            {
-
-                Session["userReUrl"] = Request.Url.ToString();
-
-                var time = SSOCommon.DateToTimestamp(DateTime.Now);
-                var reUrl = "http://www.weba.com/home/ssologincallback";
-
-                string url = string.Format("{0}?reurl={1}&key={2}&time={3}&sign={4}", passportUrl, reUrl, key, time, SSOCommon.Md5Encrypt(reUrl + key + time + ssoToken));
-
-                return Redirect(url);
-            }
-
             return View();
-
         }
+
+        public ActionResult IsLogin()
+        {
+            ViewBag.IsLogin = Session["ISLOGIN"] != null && Convert.ToBoolean(Session["ISLOGIN"]);
+            return View();
+        }
+
 
 
         public ActionResult SSOLoginCallback(string token, long time, string sign)
         {
 
-            if (SSOCommon.Md5Encrypt(token + time + ssoToken) != sign)
+            if (SSOCommon.Md5Encrypt(token + time + _ssoToken) != sign)
             {
                 return Content("签名验证失败！");
 
