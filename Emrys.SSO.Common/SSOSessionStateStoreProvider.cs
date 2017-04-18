@@ -185,7 +185,7 @@ namespace Emrys.SSO.Common
             }
             else// 释放锁定的项并设置Session的值
             {
-                var session = db.ASPStateTempSessions.FirstOrDefault(i => i.SessionId == id);
+                var session = db.ASPStateTempSessions.Where(i => i.SessionId == id).FirstOrDefault();
                 if (session == null)
                 {
                     return;

@@ -8,8 +8,11 @@ namespace Emrys.SSO.Common
 
     public partial class ASPStateTempSessions
     {
+
         [Key]
-        [StringLength(88)]
+        public int Id { get; set; }
+
+
         public string SessionId { get; set; }
 
         public DateTime Created { get; set; }
