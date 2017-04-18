@@ -22,8 +22,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("是否登录", "IsLogin", "Home")</li>
+                    <li>
+                        <a href="http://www.passport.com/home/logout?reurl=@(Request.Url.ToString())">退出</a>
+                    </li>
                 </ul>
             </div>
         </div>
