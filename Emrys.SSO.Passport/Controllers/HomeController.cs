@@ -96,7 +96,7 @@ namespace Emrys.SSO.Passport.Controllers
             var webSessions = _db.ASPStateTempSessions.Where(i => i.Token == token).ToList();
 
             _db.ASPStateTempSessions.RemoveRange(webSessions);
-            _db.SaveChanges(); 
+            _db.SaveChanges();
 
             return Redirect(reurl);
         }

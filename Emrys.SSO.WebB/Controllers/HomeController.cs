@@ -11,7 +11,6 @@ namespace Emrys.SSO.WebB.Controllers
 {
     public class HomeController : Controller
     {
-
         private readonly SessionsDB _db = new SessionsDB();
         private static string _key = System.Configuration.ConfigurationManager.AppSettings["SSOKey"];
         private static string _ssoToken = System.Configuration.ConfigurationManager.AppSettings["SSOToken"];
@@ -19,11 +18,10 @@ namespace Emrys.SSO.WebB.Controllers
         private static string _SSOLoginCallback = System.Configuration.ConfigurationManager.AppSettings["SSOLoginCallback"];
 
 
-        [AuthLogin]
         public ActionResult Index()
-        { 
+        {
+            ViewBag.IsLogin = Session["ISLOGIN"] != null && Convert.ToBoolean(Session["ISLOGIN"]);
             return View();
-
         }
 
 
@@ -61,26 +59,12 @@ namespace Emrys.SSO.WebB.Controllers
             return Redirect(Convert.ToString(Session["userReUrl"]));
         }
 
-
-        public ActionResult IsLogin()
+        [AuthLogin]
+        public ActionResult NeedLogin()
         {
-            ViewBag.IsLogin = Session["ISLOGIN"] != null && Convert.ToBoolean(Session["ISLOGIN"]);
             return View();
         }
 
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

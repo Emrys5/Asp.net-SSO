@@ -16,19 +16,13 @@ namespace Emrys.SSO.WebA.Controllers
         private static string _passportUrl = System.Configuration.ConfigurationManager.AppSettings["SSOURL"];
         private static string _SSOLoginCallback = System.Configuration.ConfigurationManager.AppSettings["SSOLoginCallback"];
 
-        [AuthLogin]
+        
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult IsLogin()
         {
             ViewBag.IsLogin = Session["ISLOGIN"] != null && Convert.ToBoolean(Session["ISLOGIN"]);
             return View();
         }
-
-
+          
 
         public ActionResult SSOLoginCallback(string token, long time, string sign)
         {
@@ -64,19 +58,12 @@ namespace Emrys.SSO.WebA.Controllers
             return Redirect(Convert.ToString(Session["userReUrl"]));
         }
 
-
-        public ActionResult About()
-        {
-            ViewBag.Message = Convert.ToString(Session["lining"]);
-
+        [AuthLogin]
+        public ActionResult NeedLogin()
+        {  
             return View();
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        
     }
 }
