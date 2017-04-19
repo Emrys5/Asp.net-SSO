@@ -112,6 +112,9 @@ namespace Emrys.SSO.Common
             db.SaveChanges();
 
 
+
+
+
         }
 
         /// <summary>
@@ -242,6 +245,7 @@ namespace Emrys.SSO.Common
         /// <returns></returns>
         public SessionStateStoreData DoGet(bool isExclusive, HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
+
             // 设置初始值
             var item = default(SessionStateStoreData);
             lockAge = TimeSpan.Zero;
@@ -269,6 +273,7 @@ namespace Emrys.SSO.Common
                     lockId = session.LockId;
                     return null;
                 }
+                session.Locked = true;
             }
 
             // 判断是否过期
@@ -283,6 +288,8 @@ namespace Emrys.SSO.Common
             session.Flags = (int)SessionStateActions.None;
             session.LockId = Convert.ToInt32(lockId);
 
+            db.SaveChanges();
+
             // 获取timeout
             var timeout = actions == SessionStateActions.InitializeItem ? _expiresTime.TotalMinutes : session.Timeout;
 
@@ -296,6 +303,21 @@ namespace Emrys.SSO.Common
             }
 
             item = new SessionStateStoreData(sessionStateItemCollection ?? new SessionStateItemCollection(), SessionStateUtility.GetSessionStaticObjects(context), (int)timeout);
+
+
+
+            // 设置管理其他的session的过期时间。
+            var token = session.Token;
+            if (!string.IsNullOrEmpty(token))
+            {
+                var otherSession = db.ASPStateTempSessions.Where(i => i.Token == token && i.SessionId != session.SessionId).ToList();
+                foreach (var se in otherSession)
+                {
+                    var s = db.ASPStateTempSessions.Where(i => i.Id == se.Id).FirstOrDefault();
+                    s.Expires = DateTime.Now + _expiresTime;
+                    db.SaveChanges();
+                }
+            }
 
             return item;
 
